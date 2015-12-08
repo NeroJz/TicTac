@@ -1,0 +1,19 @@
+<div class="app-container" ng-controller="gameplayCtrl">
+    <h3>Game play</h3>
+
+    <div class="row gameplay">
+        <div class="row" id="game">
+            <button ng-repeat="cell in board[0] track by $index" ng-disabled="isTaken(cell) || winner" ng-click="move(0, $index)"
+                class="btn col-md-4 col-xs-4">{{cell}}
+            </button>
+            <button ng-repeat="cell in board[1] track by $index" ng-disabled="isTaken(cell) || winner" ng-click="move(1, $index)"
+                class="btn col-md-4  col-xs-4">{{cell}}
+            </button>
+            <button ng-repeat="cell in board[2] track by $index" ng-disabled="isTaken(cell) || winner" ng-click="move(2, $index)"
+                class="btn col-md-4  col-xs-4">{{cell}}
+            </button>
+        </div>
+    </div>
+
+    <div>Player {{currentPlayer}} turn</div>a
+</div>

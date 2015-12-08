@@ -1,0 +1,48 @@
+body {
+    padding-top: 50px;
+}
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.app-container{
+    text-align: center;
+}
+
+.row.gameplay{
+    display: inline-block;
+}
+
+#game button {
+    float: left;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    color: #fff;
+    height: 60px;
+    line-height: 60px;
+    font-size: 20px;
+    color: #ccc;
+    font-weight: bold;
+    border: 1px solid #c7ddef;
+    min-width: 20px;
+    background-color: #00b3ee;
+}
+
+#game li.disable {
+    color: #fff
+}
+
+#game {
+    float: left;
+    padding: 0;
+    clear: both
+}
