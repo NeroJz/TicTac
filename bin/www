@@ -21,6 +21,43 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+var io = app.io;
+
+var users = [];
+io.attach(server);
+
+io.on("connection", function(socket){
+  console.log(socket.id);
+  console.log(users.length);
+  if(users.length == 0){
+    users.push(socket);
+    socket.emit('init', {player: 'first'});
+  }else{
+    users.push(socket);
+    socket.emit('init', {player: 'two'});
+  }
+
+  socket.on('disconnect', function(){
+    var i = users.indexOf(socket);
+    users.splice(i, 1);
+  });
+
+  socket.on('playerMove', function(data){
+    console.log(data);
+    updateGamePlay(data);
+  });
+
+  function updateGamePlay(data){
+    if(data.sendBy == 'first'){
+      data.now = "two";
+    }else if(data.sendBy == 'two'){
+      data.now = "first";
+    }
+    io.emit('updateGamePlay', data);
+  }
+
+});
+
 /**
  * Listen on provided port, on all network interfaces.
  */
