@@ -1,45 +1,26 @@
 <h3>Leaderboard</h3>
+<div ng-controller="leaderboardCtrl">
+    <table class="table table-hover" ng-if="users">
+        <tr>
+            <th>Rank #</th>
+            <th>Name</th>
+            <th>Win</th>
+            <th>Lose</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
 
-<table class="table table-hover">
-    <tr>
-        <th>Rank #</th>
-        <th>Name</th>
-        <th>Win</th>
-        <th>Lose</th>
-    </tr>
+        <tr ng-repeat="user in users track by $index">
+            <td>{{$index + 1}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.win}}</td>
+            <td>{{user.lose}}</td>
+            <td>Online</td>
+            <td><a class="btn btn-success" href="#/gameplay">Challenge</a></td>
+        </tr>
+    </table>
 
-    <tr>
-        <td>1</td>
-        <td>Lau Kum Hoe</td>
-        <td>10</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>2</td>
-        <td>Lau Kum Ping</td>
-        <td>8</td>
-        <td>2</td>
-    </tr>
-
-    <tr>
-        <td>3</td>
-        <td>Lau Mun Lai</td>
-        <td>6</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>4</td>
-        <td>Chong Swee Fah</td>
-        <td>6</td>
-        <td>0</td>
-    </tr>
-
-    <tr>
-        <td>5</td>
-        <td>Nero Jz</td>
-        <td>2</td>
-        <td>6</td>
-    </tr>
-</table>
+    <div ng-if="!users">
+        <p class="alert">There is no one registered in the system</p>
+    </div>
+</div>

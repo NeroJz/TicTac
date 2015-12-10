@@ -46,3 +46,12 @@ input {
     padding: 0;
     clear: both
 }
+
+
+.display-errors{
+    margin: 10px 0px 10px 0px;
+}
+
+.display-errors li{
+    list-style: none;
+}
