@@ -1,8 +1,20 @@
-<form class="form-signin">
-    <h2 class="form-signin-heading">Please Login</h2>
-    <label>Username</label>
-    <input type="text" id="username" name="username" class="form-control" placeholder="Username">
-    <label>Password</label>
-    <input type="password" id="password" name="passowrd" class="form-control" placeholder="Password">
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-</form>
+<div ng-controller="UserLoginCtrl">
+
+    <div ng-if="alert" class="display-errors">
+        <ul>
+            <li class="alert alert-danger">
+                {{alert}}
+            </li>
+        </ul>
+    </div>
+
+    <form class="form-signin" ng-submit="doLogin()">
+        <h2 class="form-signin-heading">Please Login</h2>
+        <label>Username</label>
+        <input type="text" id="username" ng-model="username" name="username" class="form-control" placeholder="Username">
+        <label>Password</label>
+        <input type="password" id="password" ng-model="password" name="passowrd" class="form-control" placeholder="Password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+</div>

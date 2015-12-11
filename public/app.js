@@ -21,5 +21,5 @@ app.config(['$routeProvider', function($routeProvider){
             templateUrl: 'views/gameplay.view.html',
         });
 
-    $routeProvider.otherwise('/leaderboard');
+    $routeProvider.otherwise('/users');
 }]);
