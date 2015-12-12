@@ -1,6 +1,8 @@
 angular.module('ticTacApp')
-    .controller('leaderboardCtrl', ['$scope', '$http',
-    function($scope, $http){
+    .controller('leaderboardCtrl', ['$scope', '$http', '$rootScope', 'Auth',
+    function($scope, $http, $rootScope, Auth){
+        console.log($rootScope.currentUser);
+
         $http.get('/users/getUsers').success(function(data){
             $scope.users = data;
         });
@@ -8,7 +10,6 @@ angular.module('ticTacApp')
     }])
     .controller('UserLoginCtrl', ['$scope', '$http', '$rootScope', '$location',
     function($scope, $http, $rootScope, $location){
-
         $scope.doLogin = function(){
             var login_data = {
                 username: $scope.username,
@@ -17,12 +18,12 @@ angular.module('ticTacApp')
 
             $http.post('/users/login', login_data)
                 .success(function(data){
-                    $scope.loggedUser = data;
-                    $rootScope.userLogged = true;
+                    $rootScope.currentUser = data;
+                    $rootScope.loggedUser = true;
                     $location.path('/leaderboard');
                 })
                 .error(function(data){
-                    console.log(data);
+                    $scope.alert = "Opps, invalid username or password."
                 });
         };
 

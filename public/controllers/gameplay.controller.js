@@ -1,6 +1,6 @@
 angular.module('ticTacApp')
-    .controller('gameplayCtrl', ['$scope', 'socket',
-        function ($scope, socket) {
+    .controller('gameplayCtrl', ['$scope', 'socket', '$rootScope',
+        function ($scope, socket, $rootScope) {
             var turn = 0;
 
             $scope.currentPlayer = 'X';
@@ -18,14 +18,15 @@ angular.module('ticTacApp')
                 return cell !== '-';
             };
 
-            socket.on('init', function(data){
-                $scope.player = data.player;
-
-                if(data.player == "first"){
-                    $scope.now = 'first';
-                }
-
-            });
+            // Init
+            //socket.on('init', function(data){
+            //    $scope.player = data.player;
+            //
+            //    if(data.player == "first"){
+            //        $scope.now = 'first';
+            //    }
+            //
+            //});
 
             socket.on('updateGamePlay', function(data){
                 $scope.board = data.board;
@@ -57,7 +58,8 @@ angular.module('ticTacApp')
                     sendBy: $scope.player
                 };
 
-                socket.emit('playerMove',socketData);
+                // Init
+                //socket.emit('playerMove',socketData);
             };
 
             checkGame = function (board) {

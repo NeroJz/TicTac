@@ -1,7 +1,9 @@
-<h3>Leaderboard</h3>
-<a class="btn btn-danger pull-right" href="#/gameplay">Start New Game</a>
-<br><br>
-<div ng-controller="leaderboardCtrl">
+<div>
+    <h3>Leaderboard</h3>
+    <a class="btn btn-danger pull-right" href="#gameplay/">Start New Game</a>
+    <br><br>
+    <h5>Welcome back, {{currentUser.username}}.</h5>
+
     <table class="table table-hover" ng-if="users">
         <tr>
             <th>Rank #</th>

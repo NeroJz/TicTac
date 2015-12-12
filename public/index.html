@@ -16,7 +16,7 @@
 <body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container" ng-controller="menuCtrl">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -29,17 +29,18 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li ng-if="userLogged" ><a href="#/users">Users</a></li>
+                <li><a href="#/users">Users</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="!userLogged" ><a href="#/login">Login</a></li>
-                <li ng-if="!userLogged" ><a href="#/register">Register</a></li>
+                <li ng-if="!loggedUser"><a href="#/login">Login</a></li>
+                <li ng-if="!loggedUser"><a href="#/register">Register</a></li>
+                <li ng-if="loggedUser" style="cursor: pointer"><a ng-click="doLogout()">Logout</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
 
-<div class="container" ng-view>
+<div class="container">
     <div ng-view>
 
     </div>
@@ -58,7 +59,7 @@
 <script src="services/socket.service.js"></script>
 <script src="services/Authentication.service.js"></script>
 
-<script src="controllers/gameplay.controller.js"></script>
+<script src="controllers/game.controller.js"></script>
 <script src="controllers/user.controller.js"></script>
 <script src="controllers/menu.controller.js"></script>
 <script src="/socket.io/socket.io.js"></script>

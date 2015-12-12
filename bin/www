@@ -8,6 +8,9 @@ var app = require('../app');
 var debug = require('debug')('tictactoe:server');
 var http = require('http');
 
+var Game = require('../models/game');
+var User = require('../models/user');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -24,39 +27,93 @@ var server = http.createServer(app);
 var io = app.io;
 
 var users = [];
+var sockets = [];
+var gameId = '';
+
 io.attach(server);
 
-io.on("connection", function(socket){
-  console.log(socket.id);
-  console.log(users.length);
-  if(users.length == 0){
-    users.push(socket);
-    socket.emit('init', {player: 'first'});
-  }else{
-    users.push(socket);
-    socket.emit('init', {player: 'two'});
-  }
+io.on('connection', function (socket) {
 
-  socket.on('disconnect', function(){
-    var i = users.indexOf(socket);
-    users.splice(i, 1);
-  });
+    socket.on('init game', function (data) {
+        users.push(socket);
+        console.log("There is " + users.length + " join the loop");
 
-  socket.on('playerMove', function(data){
-    console.log(data);
-    updateGamePlay(data);
-  });
+        if (users.length == 1) {
+            newGame = new Game({
+                created: Date.now(),
+                playerOne: data.userId,
+                playerTwo: '',
+                flag: 'first',
+                boards: [
+                    ['-', '-', '-'],
+                    ['-', '-', '-'],
+                    ['-', '-', '-'],
+                ]
+            });
 
-  function updateGamePlay(data){
-    if(data.sendBy == 'first'){
-      data.now = "two";
-    }else if(data.sendBy == 'two'){
-      data.now = "first";
-    }
-    io.emit('updateGamePlay', data);
-  }
+            Game.createNewGame(newGame, function(err, game){
+                if(err) throw err;
+                gameId = game.id;
+                console.log(gameId);
+                socket.join(gameId);
+            })
+        }else if(users.length == 2){
+            var data = {
+                playerTwo: data.userId
+            };
 
+            Game.updatePlayer2(gameId, data, function(err, game){
+                if(err) throw err;
+                socket.join(gameId);
+
+                io.in(gameId).emit('start game', game);
+                users = [];
+                gameId = "";
+            })
+        }
+    });
+
+    socket.on('player move', function(data){
+        var update = {
+            boards : data.boards,
+            flag: data.flag
+        };
+
+        Game.updateGamePlay(data.id, update, function(err, game){
+            if(err) throw err;
+
+            io.in(game.id).emit('update game', game);
+
+        });
+    });
+
+    socket.on('game winner', function(data){
+        User.increaseLose(data.loseId, function(err, user){
+            if(err) throw err;
+
+            console.log(user.username+ " lose 1 point");
+        });
+
+        User.increaseWin(data.winnerId, function(err, user){
+            if(err) throw err;
+
+            console.log(user.username+ " win 1 point");
+        });
+
+        Game.deleteGame(data.gameId, function(err, game){
+            if(err) throw err;
+
+            console.log("Gameover. Game is deleted.");
+        });
+
+    });
+
+    socket.on('disconnect', function(){
+        var i = users.indexOf(socket);
+        users.splice(i, 1);
+    });
 });
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -71,19 +128,19 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+    var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -91,27 +148,27 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -119,9 +176,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
 }

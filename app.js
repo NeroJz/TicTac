@@ -13,6 +13,8 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
 
+mongoose.connect('mongodb://localhost/tictac');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 

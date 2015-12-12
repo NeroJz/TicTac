@@ -85,6 +85,7 @@ function isAuthenticated(req, res, next){
 }
 
 router.get('/currentUser', isAuthenticated, function(req, res){
+    console.log(res.user);
     res.json(req.user);
 });
 

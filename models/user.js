@@ -1,9 +1,5 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/tictac');
-
-var db = mongoose.connection;
-
 //Schema
 var UserSchema = mongoose.Schema({
     username:{
@@ -58,5 +54,23 @@ module.exports.getUserByUsername = function(username, callback){
 
 module.exports.getUserById = function(id, callback){
     User.findById(id, callback);
+};
+
+module.exports.increaseWin = function(id, callback){
+    User.findById(id, function(err, user){
+        if(err) throw err;
+
+        user.win++;
+        user.save(callback);
+    })
+};
+
+module.exports.increaseLose = function(id, callback){
+    User.findById(id, function(err, user){
+        if(err) throw err;
+
+        user.lose++;
+        user.save(callback);
+    })
 };
 
