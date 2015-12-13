@@ -2,7 +2,8 @@
 
 Please install the node_module using npm install
 
-The database is located in the directory named 'db'
+The database is located in the directory named 'db' or
+import the json files from directory named 'mongodb-json'
 
 Tools involved in this project include:
 Mongodb,
