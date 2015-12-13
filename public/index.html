@@ -28,8 +28,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#/users">Users</a></li>
+                <li ng-if="!loggedUser" class="active"><a href="#">Home</a></li>
+                <li ng-if="loggedUser" class="active"><a href="#/leaderboard">Leaderboard</a></li>
+                <li ng-if="loggedUser"><a href="#/users">Users</a></li>
+                <li ng-if="loggedUser"><a href="#/gamelist">My Game</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-if="!loggedUser"><a href="#/login">Login</a></li>

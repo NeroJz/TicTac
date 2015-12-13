@@ -3,6 +3,7 @@
         <ul>
             <li ng-class="style">
                 {{gameMsg}}
+                <div ng-if="gameMsg != 'Waiting Player to join'">Player {{now}} turn</div>
             </li>
         </ul>
     </div>
@@ -27,7 +28,6 @@
         </div>
     </div>
 
-    <div>Player {{now}} turn</div>
     <div>Your are Player {{ player }}</div>
     <a ng-if="returnButton" href="#/leaderboard" class="btn btn-primary">Go to Leaderboard</a>
 </div>

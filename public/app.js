@@ -29,5 +29,13 @@ angular.module('ticTacApp', ['ngRoute'])
                 templateUrl: 'views/gameplay.view.html',
                 controller: 'gameplayCtrl'
             })
+            .when('/gamelist',{
+                templateUrl: 'views/gamelist.view.html',
+                controller: 'gamelistCtrl'
+            })
+            .when('/continue/:gameid',{
+                templateUrl: 'views/gameplay.view.html',
+                controller: 'gameContinueCtrl'
+            })
             .otherwise({redirectTo:'/'});
     }]);

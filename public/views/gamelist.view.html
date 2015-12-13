@@ -1,40 +1,29 @@
 <h3>Your current games list</h3>
-<a class="btn btn-primary pull-right" href="#/gameplay">Start New Game</a>
 <br> <br>
-<table class="table table-hover">
+<table class="table table-hover" ng-if="games.length > 0">
     <tr>
-        <th>Rank #</th>
-        <th>Opponents</th>
+        <th>#Game</th>
+        <th>Player One</th>
+        <th>Player Two</th>
         <th>Action</th>
     </tr>
 
-    <tr>
-        <td>1</td>
-        <td>Lau Kum Hoe</td>
-        <td><a class="btn btn-success" href="#/gameplay">Continue</a></td>
-    </tr>
-
-    <tr>
-        <td>2</td>
-        <td>Lau Kum Ping</td>
-        <td><a class="btn btn-success" href="#/gameplay">Continue</a></td>
-    </tr>
-
-    <tr>
-        <td>3</td>
-        <td>Lau Mun Lai</td>
-        <td><a class="btn btn-success" href="#/gameplay">Continue</a></td>
-    </tr>
-
-    <tr>
-        <td>4</td>
-        <td>Chong Swee Fah</td>
-        <td><a class="btn btn-success" href="#/gameplay">Continue</a></td>
-    </tr>
-
-    <tr>
-        <td>5</td>
-        <td>Nero Jz</td>
-        <td><a class="btn btn-success" href="#/gameplay">Continue</a></td>
+    <tr ng-repeat="game in games track by $index">
+        <td>{{$index+1}}</td>
+        <td>
+            <p ng-if="game.playerOne == currentUser._id">You</p>
+            <p ng-if="game.playerOne != currentUser._id">User ({{game.playerOne}})</p>
+        </td>
+        <td>
+            <p ng-if="game.playerTwo == currentUser._id">You</p>
+            <p ng-if="game.playerTwo != currentUser._id">User ({{game.playerTwo}})</p>
+        </td>
+        <td><a class="btn btn-success" href="#/continue/{{game._id}}">Continue</a></td>
     </tr>
 </table>
+
+<div class="display-errors" ng-if="games.length == 0">
+    <ul class="alert alert-info">
+        <li>Yo do not have any game</li>
+    </ul>
+</div>

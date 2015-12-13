@@ -26,6 +26,10 @@ module.exports.createNewGame = function(newGame, callback){
   newGame.save(callback);
 };
 
+module.exports.getGameById = function(id, callback){
+    Game.findById(id, callback);
+};
+
 module.exports.updatePlayer2 = function(id, data, callback){
     var playerTwo = data.playerTwo;
     var query = {_id: id};
@@ -55,6 +59,17 @@ module.exports.updateGamePlay = function(id, data, callback){
             game.save(callback);
         }
     });
+};
+
+module.exports.findGameByUserId = function(id, callback){
+    var query = {
+        $or:[
+            {playerOne: id},
+            {playerTwo: id}
+        ]
+    };
+
+    Game.find(query, callback);
 };
 
 module.exports.deleteGame = function(id, callback){

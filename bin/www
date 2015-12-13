@@ -121,6 +121,11 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('switch game', function(data){
+        socket.join(data.gameId);
+        io.in(data.gameId).emit('user joined', data.user);
+    });
+
     socket.on('disconnect', function(){
         var i = users.indexOf(socket);
         users.splice(i, 1);

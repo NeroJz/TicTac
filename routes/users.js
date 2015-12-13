@@ -5,6 +5,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
+var Game = require('../models/game');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -97,6 +98,20 @@ router.get('/logout', function(req, res){
     console.log('logout');
     req.logout();
     res.send(200);
+});
+
+router.get('/gamelist/:userId', function(req, res){
+    Game.findGameByUserId(req.params.userId, function(err, games){
+        if(err) throw err;
+        res.json(games);
+    });
+});
+
+router.get('/getgame/:gameId', function(req, res){
+    Game.getGameById(req.params.gameId, function(err, games){
+        if(err) throw err;
+        res.json(games);
+    });
 });
 
 module.exports = router;
