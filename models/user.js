@@ -22,7 +22,7 @@ var UserSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.getUsers = function(callback){
-    User.find(callback);
+    User.find(callback).sort({win:-1});
 };
 
 module.exports.createUser = function(newUser, callback){

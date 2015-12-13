@@ -82,7 +82,11 @@ io.on('connection', function (socket) {
         Game.updateGamePlay(data.id, update, function(err, game){
             if(err) throw err;
 
-            io.in(game.id).emit('update game', game);
+            var feedback = {
+                game: game,
+                turn: data.turn
+            };
+            io.in(game.id).emit('update game', feedback);
 
         });
     });
@@ -106,6 +110,15 @@ io.on('connection', function (socket) {
             console.log("Gameover. Game is deleted.");
         });
 
+        console.log(data);
+        io.in(data.gameId._id).emit('game end', data);
+    });
+
+    socket.on('tied game', function(data){
+        Game.deleteGame(data.gameId, function(err, game){
+            if(err) throw err;
+            console.log("Game is tied. Game is deleted.");
+        });
     });
 
     socket.on('disconnect', function(){

@@ -3,12 +3,15 @@ angular.module('ticTacApp')
         function ($scope, socket, $rootScope) {
 
             var turn = 0;
-            var flag = 'first';
+            var flag = '';
 
             $scope.currentPlayer = 'X';
             $scope.player = '';
-            $scope.now = '';
+            $scope.now = 'waiting';
             $scope.winner = null;
+            $scope.gameMsg="Waiting Player to join";
+            $scope.style = "alert alert-info";
+            $scope.returnButton = false;
 
             $scope.boards = [
                 ['-', '-', '-'],
@@ -27,28 +30,59 @@ angular.module('ticTacApp')
                 console.log($rootScope.currentGame);
 
                 if ($rootScope.currentUser._id == data.playerOne) {
-                    $scope.player = "first"
+                    $scope.player = "one"
                 } else {
-                    $scope.player = "second"
+                    $scope.player = "two"
                 }
 
-                $scope.now = "first";
+                $scope.now = "one";
+                $scope.gameMsg="Game Starts";
+                $scope.style = "alert alert-success";
             });
 
             socket.on('update game', function (data) {
-                $scope.boards = data.boards;
-                $scope.now = data.flag;
+                $scope.boards = data.game.boards;
+                $scope.now = data.game.flag;
+                turn = data.turn;
 
-                if (data.flag == 'second') {
+                if (data.game.flag == 'two') {
                     $scope.currentPlayer = 'O';
                 } else {
                     $scope.currentPlayer = 'X';
+                }
+
+                if (turn == 8) {
+                    $scope.gameMsg="Tied Game!";
+                    $scope.style = "alert alert-warning";
+                    $scope.now = '';
+
+                    socket.emit('tied game', {gameId: $rootScope.currentGame});
+                    $scope.returnButton = true;
+                    return;
                 }
             });
 
             $scope.isTaken = function (cell) {
                 return cell !== '-';
             };
+
+            socket.on('game end', function(data){
+                $scope.boards = data.boards;
+                console.log(data.winnerId);
+                console.log(data.loseId);
+
+
+                if($rootScope.currentUser._id == data.winnerId){
+                    $scope.gameMsg="You Win!";
+                    $scope.style = "alert alert-warning";
+                }
+
+                if($rootScope.currentUser._id == data.loseId){
+                    $scope.gameMsg="Oops You Lose!";
+                    $scope.style = "alert alert-danger";
+                }
+                $scope.returnButton = true;
+            });
 
 
             $scope.move = function (row, index) {
@@ -58,7 +92,6 @@ angular.module('ticTacApp')
 
                 if (gameStatus) {
                     $scope.winner = $scope.currentPlayer;
-                    alert($scope.winner + " wins.");
                     var playerWon = '';
                     var playerLose = '';
                     if ($scope.winner == 'X') {
@@ -80,23 +113,20 @@ angular.module('ticTacApp')
 
                     return;
                 }
-                if (turn == 9 && gameStatus == false) {
-                    alert("Tied game!");
-                    return;
-                }
 
                 $scope.currentPlayer = $scope.currentPlayer === 'X' ? 'O' : 'X';
 
                 if ($scope.currentPlayer == 'X') {
-                    flag = 'first';
+                    flag = 'one';
                 } else {
-                    flag = 'second';
+                    flag = 'two';
                 }
 
                 var socketData = {
                     boards: $scope.boards,
                     flag: flag,
-                    id: $rootScope.currentGame._id
+                    id: $rootScope.currentGame._id,
+                    turn: turn
                 };
                 socket.emit('player move', socketData);
             };

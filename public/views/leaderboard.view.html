@@ -10,8 +10,6 @@
             <th>Name</th>
             <th>Win</th>
             <th>Lose</th>
-            <th>Status</th>
-            <th>Actions</th>
         </tr>
 
         <tr ng-repeat="user in users track by $index">
@@ -19,8 +17,6 @@
             <td>{{user.username}}</td>
             <td>{{user.win}}</td>
             <td>{{user.lose}}</td>
-            <td>Online</td>
-            <td><a class="btn btn-success" href="#/gameplay">Challenge</a></td>
         </tr>
     </table>
 

@@ -3,7 +3,7 @@ angular.module('ticTacApp')
 
         $scope.doLogout = function(){
             $http.get('/users/logout').success(function(){
-                $rootScope.userLogged = false;
+                $rootScope.loggedUser = false;
             }).error(function(err){
                 $scope.alert = "Login failed";
             });
