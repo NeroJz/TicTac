@@ -1,13 +1,27 @@
-#TicTacToeApp
+# Mean Stack TicTacToeApp
+A multi player TicTacToe game developed using MEAN stack technology.
 
-Please install the node_module using npm install
+## Getting Started
+To run the app, in terminal or command prompt type:
+```
+npm app.js
+```
+Open browser and type http://localhost
 
-The database is located in the directory named 'db' or
-import the json files from directory named 'mongodb-json'
+### Installation:
+##### Pre-requisite:
+* Mongodb,
+* ExpressJS (express-generator),
+* AngularJS,
+* NodeJs(Socket.io, Passport, Passport-local, Express-validator)
+* Bootstrap (as design framework)
+* Modern Web browser
 
-Tools involved in this project include:
-Mongodb,
-ExpressJS (express-generator),
-AngularJS,
-NodeJs(Socket.io, Passport, Passport-local, Express-validator)
-Bootstrap (as design framework)
+
+##### Build With
+* NodeJS
+
+
+### Version
+1.0.0
+
